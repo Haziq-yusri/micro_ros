@@ -2,7 +2,7 @@
 
 while true
 do
-    ros2 launch kaiaai_bringup publish_urdf.launch.py urdf_path:=$1 gui:=$2 &
+    ros2 launch micro_ros_bringup publish_urdf.launch.py urdf_path:=$1 gui:=$2 &
     pid=$!
     trap "kill $!; exit" INT
     inotifywait -e modify $1

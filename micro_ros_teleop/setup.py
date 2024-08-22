@@ -1,6 +1,6 @@
 from setuptools import setup
 
-package_name = 'kaiaai_teleop'
+package_name = 'micro_ros_teleop'
 
 setup(
     name=package_name,
@@ -29,7 +29,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'teleop_keyboard = kaiaai_teleop.teleop_keyboard:main'
+            'teleop_keyboard = micro_ros_teleop.teleop_keyboard:main'
         ],
     },
 )
