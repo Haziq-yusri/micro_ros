@@ -21,7 +21,7 @@ add_executable(telem_test_pub src/telem_test_pub.cpp)
 ament_target_dependencies(telem_test_pub rclcpp micro_ros_msgs)
 
 add_executable(telem src/telem.cpp)
-ament_target_dependencies(telem rclcpp kaiaai_msgs nav_msgs sensor_msgs geometry_msgs tf2_msgs tf2_ros tf2)
+ament_target_dependencies(telem rclcpp micro_ros_msgs nav_msgs sensor_msgs geometry_msgs tf2_msgs tf2_ros tf2)
 
 install(TARGETS
   telem_test_pub
