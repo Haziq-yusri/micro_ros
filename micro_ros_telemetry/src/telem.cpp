@@ -17,8 +17,8 @@
 #include <string>
 
 #include "rclcpp/rclcpp.hpp"
-#include "kaiaai_msgs/msg/kaiaai_telemetry2.hpp"
-#include "kaiaai_msgs/msg/wifi_state.hpp"
+#include "micro_ros_msgs/msg/telemetry2.hpp"
+#include "micro_ros_msgs/msg/wifi_state.hpp"
 #include <builtin_interfaces/msg/time.hpp>
 #include <nav_msgs/msg/odometry.hpp>
 #include <sensor_msgs/msg/joint_state.hpp>
@@ -45,14 +45,14 @@
 
 using std::placeholders::_1;
 
-class KaiaaiTelemetry : public rclcpp::Node
+class Telemetry : public rclcpp::Node
 {
 public:
-  inline static const std::string NODE_NAME = "kaiaai_telemetry_node";
+  inline static const std::string NODE_NAME = "micro_ros_telemetry_node";
   static constexpr double DEG_TO_RAD = 0.017453292519943295769236907684886;
 
 public:
-  KaiaaiTelemetry()
+  Telemetry()
   : Node(NODE_NAME)
   {
     this->declare_parameter("laser_sensor.model", std::vector<std::string>({"YDLIDAR-X4", "LDS02RR"}));
@@ -89,9 +89,9 @@ public:
 
     this->declare_parameter("wifi.topic_name_pub", "wifi_state");
 
-    telem_sub_ = this->create_subscription<kaiaai_msgs::msg::KaiaaiTelemetry2>(
+    telem_sub_ = this->create_subscription<micro_ros_msgs::msg::Telemetry2>(
       this->get_parameter("telemetry.topic_name_sub").as_string(),
-      rclcpp::SensorDataQoS(), std::bind(&KaiaaiTelemetry::topic_callback, this, _1));
+      rclcpp::SensorDataQoS(), std::bind(&Telemetry::topic_callback, this, _1));
     odom_pub_ = this->create_publisher<nav_msgs::msg::Odometry>(
       this->get_parameter("odometry.topic_name_pub").as_string(), 10);
     joint_state_pub_ = this->create_publisher<sensor_msgs::msg::JointState>(
@@ -100,7 +100,7 @@ public:
       this->get_parameter("laser_scan.topic_name_pub").as_string(), 10);
     battery_state_pub_ = this->create_publisher<sensor_msgs::msg::BatteryState>(
       this->get_parameter("battery.topic_name_pub").as_string(), 10);
-    wifi_state_pub_ = this->create_publisher<kaiaai_msgs::msg::WifiState>(
+    wifi_state_pub_ = this->create_publisher<micro_ros_msgs::msg::WifiState>(
       this->get_parameter("wifi.topic_name_pub").as_string(), 10);
     tf_broadcaster_ = std::make_unique<tf2_ros::TransformBroadcaster>(*this);
 
@@ -122,7 +122,7 @@ public:
     publish_intensity_ = false;
   }
 
-  ~KaiaaiTelemetry()
+  ~Telemetry()
   {
     if (plds != NULL) {
       delete plds;
@@ -131,7 +131,7 @@ public:
   }
 
 private:
-  void topic_callback(const kaiaai_msgs::msg::KaiaaiTelemetry2 & telem_msg) // const
+  void topic_callback(const micro_ros_msgs::msg::Telemetry2 & telem_msg) // const
   {
     long int seq_diff = (long int)telem_msg.seq - (long int)seq_last_;
     seq_last_ = telem_msg.seq;
@@ -210,7 +210,7 @@ private:
       process_lds_data(telem_msg);
     }
 
-    auto wifi_state_msg = kaiaai_msgs::msg::WifiState();
+    auto wifi_state_msg = micro_ros_msgs::msg::WifiState();
     wifi_state_msg.stamp = telem_msg.stamp;
     wifi_state_msg.rssi_dbm = telem_msg.wifi_rssi_dbm;
     wifi_state_pub_->publish(wifi_state_msg);
@@ -368,7 +368,7 @@ private:
     //RCLCPP_INFO(this->get_logger(), "mask_radius_meters_ %lf", mask_radius_meters_);
   }
 
-  void process_lds_data(const kaiaai_msgs::msg::KaiaaiTelemetry2 & telem_msg)
+  void process_lds_data(const micro_ros_msgs::msg::Telemetry2 & telem_msg)
   {
     if (plds == NULL)
       return;
@@ -377,7 +377,7 @@ private:
     lds_data_idx_ = 0;
     lds_msg_count_++;
 
-    pmsg = const_cast<kaiaai_msgs::msg::KaiaaiTelemetry2 *>(& telem_msg);
+    pmsg = const_cast<micro_ros_msgs::msg::Telemetry2 *>(& telem_msg);
     while (lds_data_idx_ < telem_msg.lds.size()) {
 
       int err = plds->decode_data(this);
@@ -414,14 +414,14 @@ private:
   static int read_byte_callback(const void * context)
   {
     void * ctx = const_cast<void *>(context);
-    return reinterpret_cast<KaiaaiTelemetry*>(ctx)->read_lds_byte();
+    return reinterpret_cast<Telemetry*>(ctx)->read_lds_byte();
   }
 
   static void scan_point_callback(const void * context,
     float angle_deg, float distance_mm, float quality, float intensity, bool scan_completed)
   {
     void * ctx = const_cast<void *>(context);
-    return reinterpret_cast<KaiaaiTelemetry*>(ctx)->process_scan_point(
+    return reinterpret_cast<Telemetry*>(ctx)->process_scan_point(
       angle_deg, distance_mm, quality, intensity, scan_completed);
   }
 
@@ -513,12 +513,12 @@ private:
     laser_scan_pub_->publish(laser_scan_msg);
   }
 
-  rclcpp::Subscription<kaiaai_msgs::msg::KaiaaiTelemetry2>::SharedPtr telem_sub_;
+  rclcpp::Subscription<micro_ros_msgs::msg::Telemetry2>::SharedPtr telem_sub_;
   rclcpp::Publisher<nav_msgs::msg::Odometry>::SharedPtr odom_pub_;
   rclcpp::Publisher<sensor_msgs::msg::JointState>::SharedPtr joint_state_pub_;
   rclcpp::Publisher<sensor_msgs::msg::LaserScan>::SharedPtr laser_scan_pub_;
   rclcpp::Publisher<sensor_msgs::msg::BatteryState>::SharedPtr battery_state_pub_;
-  rclcpp::Publisher<kaiaai_msgs::msg::WifiState>::SharedPtr wifi_state_pub_;
+  rclcpp::Publisher<micro_ros_msgs::msg::WifiState>::SharedPtr wifi_state_pub_;
   std::unique_ptr<tf2_ros::TransformBroadcaster> tf_broadcaster_;
   std::vector<float> ranges_;
   std::vector<float> intensities_;
@@ -541,14 +541,14 @@ private:
   bool broken_scan_;
   bool publish_intensity_;
 
-  kaiaai_msgs::msg::KaiaaiTelemetry2 * pmsg;
+  micro_ros_msgs::msg::Telemetry2 * pmsg;
   builtin_interfaces::msg::Time prev_stamp_;
 };
 
 int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
-  rclcpp::spin(std::make_shared<KaiaaiTelemetry>());
+  rclcpp::spin(std::make_shared<Telemetry>());
   rclcpp::shutdown();
   return 0;
 }
