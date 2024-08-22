@@ -13,12 +13,12 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <exec_depend>kaiaai_bringup</exec_depend>
+  <exec_depend>micro_ros_bringup</exec_depend>
   <exec_depend>makerspet_snoopy</exec_depend>
   <exec_depend>makerspet_loki</exec_depend>
   <exec_depend>kaiaai_navigation</exec_depend>
-  <exec_depend>kaiaai_teleop</exec_depend>
-  <exec_depend>kaiaai_telemetry</exec_depend>
+  <exec_depend>micro_ros_teleop</exec_depend>
+  <exec_depend>micro_ros_telemetry</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>
