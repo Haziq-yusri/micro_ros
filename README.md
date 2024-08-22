@@ -61,31 +61,31 @@ docker exec -it makerspet bash
 ### Operate a physical robot
 ```
 # Launch the physical robot
-ros2 launch kaiaai_bringup physical.launch.py robot_model:=makerspet_loki
+ros2 launch micro_ros_bringup physical.launch.py robot_model:=makerspet_loki
 
 # Drive robot manually
-ros2 run kaiaai_teleop teleop_keyboard robot_model:=makerspet_loki
+ros2 run micro_ros_teleop teleop_keyboard robot_model:=makerspet_loki
 
 # Monitor robot sensors
-ros2 launch kaiaai_bringup monitor_robot.launch.py robot_model:=makerspet_loki
+ros2 launch micro_ros_bringup monitor_robot.launch.py robot_model:=makerspet_loki
 
 # Create a map while driving manually
-ros2 launch kaiaai_bringup cartographer.launch.py robot_model:=makerspet_loki
+ros2 launch micro_ros_bringup cartographer.launch.py robot_model:=makerspet_loki
 
 # Save the newly-created map
 ros2 run nav2_map_server map_saver_cli -f ~/map --ros-args -p save_map_timeout:=60.0
 
 # Robot self-drives using an existing map
-ros2 launch kaiaai_bringup navigation.launch.py robot_model:=makerspet_loki map:=$HOME/map
+ros2 launch micro_ros_bringup navigation.launch.py robot_model:=makerspet_loki map:=$HOME/map
 ```
 
 Create a map automatically - no manual driving
 ```
 # Launch the physical robot
-ros2 launch kaiaai_bringup physical.launch.py robot_model:=makerspet_loki
+ros2 launch micro_ros_bringup physical.launch.py robot_model:=makerspet_loki
 
 # Launch SLAM (simultaneous localization and mapping) - navigate and map simultaneously
-ros2 launch kaiaai_bringup navigation.launch.py robot_model:=makerspet_loki slam:=True
+ros2 launch micro_ros_bringup navigation.launch.py robot_model:=makerspet_loki slam:=True
 
 # Robot automatically seeks out, self-drives to unknown locations
 ros2 launch explore_lite explore.launch.py
@@ -96,18 +96,18 @@ ros2 run nav2_map_server map_saver_cli -f ~/map --ros-args -p save_map_timeout:=
 
 ### Specify LDS/LiDAR model to use
 ```
-ros2 launch kaiaai_bringup physical.launch.py robot_model:=makerspet_loki lds_model:=XIAOMI-LDS02RR
-ros2 launch kaiaai_bringup physical.launch.py robot_model:=makerspet_loki lds_model:=YDLIDAR-X4
-ros2 launch kaiaai_bringup physical.launch.py robot_model:=makerspet_loki lds_model:=YDLIDAR-X3
-ros2 launch kaiaai_bringup physical.launch.py robot_model:=makerspet_loki lds_model:=YDLIDAR-X3-PRO
-ros2 launch kaiaai_bringup physical.launch.py robot_model:=makerspet_loki lds_model:=YDLIDAR-X2-X2L
-ros2 launch kaiaai_bringup physical.launch.py robot_model:=makerspet_loki lds_model:=YDLIDAR-SCL
-ros2 launch kaiaai_bringup physical.launch.py robot_model:=makerspet_loki lds_model:=NEATO-XV11
-ros2 launch kaiaai_bringup physical.launch.py robot_model:=makerspet_loki lds_model:=DELTA-2A
-ros2 launch kaiaai_bringup physical.launch.py robot_model:=makerspet_loki lds_model:=DELTA-2B
-ros2 launch kaiaai_bringup physical.launch.py robot_model:=makerspet_loki lds_model:=DELTA-2G
-ros2 launch kaiaai_bringup physical.launch.py robot_model:=makerspet_loki lds_model:=LDROBOT-LD14P
-ros2 launch kaiaai_bringup physical.launch.py robot_model:=makerspet_loki lds_model:=CAMSENSE-X1
+ros2 launch micro_ros_bringup physical.launch.py robot_model:=makerspet_loki lds_model:=XIAOMI-LDS02RR
+ros2 launch micro_ros_bringup physical.launch.py robot_model:=makerspet_loki lds_model:=YDLIDAR-X4
+ros2 launch micro_ros_bringup physical.launch.py robot_model:=makerspet_loki lds_model:=YDLIDAR-X3
+ros2 launch micro_ros_bringup physical.launch.py robot_model:=makerspet_loki lds_model:=YDLIDAR-X3-PRO
+ros2 launch micro_ros_bringup physical.launch.py robot_model:=makerspet_loki lds_model:=YDLIDAR-X2-X2L
+ros2 launch micro_ros_bringup physical.launch.py robot_model:=makerspet_loki lds_model:=YDLIDAR-SCL
+ros2 launch micro_ros_bringup physical.launch.py robot_model:=makerspet_loki lds_model:=NEATO-XV11
+ros2 launch micro_ros_bringup physical.launch.py robot_model:=makerspet_loki lds_model:=DELTA-2A
+ros2 launch micro_ros_bringup physical.launch.py robot_model:=makerspet_loki lds_model:=DELTA-2B
+ros2 launch micro_ros_bringup physical.launch.py robot_model:=makerspet_loki lds_model:=DELTA-2G
+ros2 launch micro_ros_bringup physical.launch.py robot_model:=makerspet_loki lds_model:=LDROBOT-LD14P
+ros2 launch micro_ros_bringup physical.launch.py robot_model:=makerspet_loki lds_model:=CAMSENSE-X1
 ```
 
 ### View, set physical robot's parameters
@@ -133,35 +133,35 @@ ros2 param set /MAKERSPET_LOKI lds.scan_freq 0.0
 ```
 # Launch the robot in a simulation - drive manually
 ros2 launch kaiaai_gazebo world.launch.py robot_model:=makerspet_loki
-ros2 run kaiaai_teleop teleop_keyboard robot_model:=makerspet_loki
+ros2 run micro_ros_teleop teleop_keyboard robot_model:=makerspet_loki
 ros2 launch kaiaai_gazebo self_drive_gazebo.launch.py robot_model:=makerspet_loki
-ros2 launch kaiaai_bringup monitor_robot.launch.py robot_model:=makerspet_loki
+ros2 launch micro_ros_bringup monitor_robot.launch.py robot_model:=makerspet_loki
 
 # Launch the robot in a simulation - robot self-drives around
 ros2 launch kaiaai_gazebo world.launch.py robot_model:=makerspet_loki
 ros2 launch kaiaai_gazebo self_drive_gazebo.launch.py robot_model:=makerspet_loki
-ros2 launch kaiaai_bringup monitor_robot.launch.py robot_model:=makerspet_loki
+ros2 launch micro_ros_bringup monitor_robot.launch.py robot_model:=makerspet_loki
 
 # Launch the robot in a simulation - create, save a map; robot self-drives around
 ros2 launch kaiaai_gazebo world.launch.py robot_model:=makerspet_loki
-ros2 launch kaiaai_bringup cartographer.launch.py use_sim_time:=true robot_model:=makerspet_loki
+ros2 launch micro_ros_bringup cartographer.launch.py use_sim_time:=true robot_model:=makerspet_loki
 ros2 launch kaiaai_gazebo self_drive_gazebo.launch.py robot_model:=makerspet_loki
 ros2 run nav2_map_server map_saver_cli -f ~/living_room_map --ros-args -p save_map_timeout:=60.0
 
 # Launch the robot in a simulation - let it navigate automatically using an existing map
 ros2 launch kaiaai_gazebo world.launch.py robot_model:=makerspet_loki
-ros2 launch kaiaai_bringup navigation.launch.py use_sim_time:=true robot_model:=makerspet_loki \
+ros2 launch micro_ros_bringup navigation.launch.py use_sim_time:=true robot_model:=makerspet_loki \
   map:=/ros_ws/src/kaiaai_simulations/kaiaai_gazebo/map/living_room.yaml
 
 # Launch the robot in a simulation - navigate and create a map simultaneously; save the map
 ros2 launch kaiaai_gazebo world.launch.py robot_model:=makerspet_loki
-ros2 launch kaiaai_bringup navigation.launch.py use_sim_time:=true robot_model:=makerspet_loki slam:=True
+ros2 launch micro_ros_bringup navigation.launch.py use_sim_time:=true robot_model:=makerspet_loki slam:=True
 ros2 run nav2_map_server map_saver_cli -f ~/map --ros-args -p save_map_timeout:=60.0
 
 # Launch the robot in a simulation - navigate and create a map simultaneously
 # Robot seeks out, self-drives to unknown locations to complete the mapping
 ros2 launch kaiaai_gazebo world.launch.py robot_model:=makerspet_loki
-ros2 launch kaiaai_bringup navigation.launch.py use_sim_time:=true robot_model:=makerspet_loki slam:=True
+ros2 launch micro_ros_bringup navigation.launch.py use_sim_time:=true robot_model:=makerspet_loki slam:=True
 ros2 launch explore_lite explore.launch.py
 ros2 run nav2_map_server map_saver_cli -f ~/map --ros-args -p save_map_timeout:=60.0
 ```
@@ -169,8 +169,8 @@ ros2 run nav2_map_server map_saver_cli -f ~/map --ros-args -p save_map_timeout:=
 ### Add your own modifications to an existing robot
 ```
 # Inspect, edit robot's URDF model
-ros2 launch kaiaai_bringup inspect_urdf.launch.py robot_model:=makerspet_loki
-ros2 launch kaiaai_bringup edit_urdf.launch.py robot_model:=makerspet_loki
+ros2 launch micro_ros_bringup inspect_urdf.launch.py robot_model:=makerspet_loki
+ros2 launch micro_ros_bringup edit_urdf.launch.py robot_model:=makerspet_loki
 
 # Convert URDF robot model file into SDF Gazebo simulation model file
 ros2 run kaiaai_gazebo urdf2sdf.sh /ros_ws/src/makerspet_loki
