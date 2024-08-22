@@ -18,7 +18,7 @@
 #include <string>
 
 #include "rclcpp/rclcpp.hpp"
-#include "micro_ros_msgs/msg/micro_ros_telemetry.hpp"
+#include "micro_ros_msgs/msg/telemetry.hpp"
 
 using namespace std::chrono_literals;
 
