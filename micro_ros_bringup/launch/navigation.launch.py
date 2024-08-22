@@ -78,7 +78,7 @@ def generate_launch_description():
         DeclareLaunchArgument(
             'map',
             default_value=os.path.join(
-                get_package_share_path('kaiaai_gazebo'),
+                get_package_share_path('micro_ros_gazebo'),
                 'map',
                 'living_room.yaml'),
             description='Full path to an existing map file'

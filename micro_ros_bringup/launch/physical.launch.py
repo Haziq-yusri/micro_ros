@@ -30,7 +30,7 @@ def make_nodes(context: LaunchContext, robot_model, lds_model, use_sim_time, no_
     lds_model_str = context.perform_substitution(lds_model)
     use_sim_time_str = context.perform_substitution(use_sim_time)
     description_package_path = get_package_share_path(robot_model_str)
-    telem_package_path = get_package_share_path('kaiaai_telemetry')
+    telem_package_path = get_package_share_path('micro_ros_telemetry')
     web_server_package_path = get_package_share_path('kaiaai_python')
 
     urdf_path_name = os.path.join(
@@ -70,7 +70,7 @@ def make_nodes(context: LaunchContext, robot_model, lds_model, use_sim_time, no_
 
     return [
         Node(
-            package="kaiaai_telemetry",
+            package="micro_ros_telemetry",
             executable="telem",
             output="screen",
             parameters = [config_telem_path_name, config_override_path_name,
